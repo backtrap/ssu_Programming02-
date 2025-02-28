@@ -1,0 +1,81 @@
+#01
+
+ 함수는 인자의 자료형을 검사하는 반면, 매크로는 인자의 형을 검사하지 않기 때문이다. 따라서 함수 tri_area_f()는 인자를 float 형으로 받아 실수 계산을 해 결과가 0.5가 나왔다. 그러나 매크로 TRI_AREA()는 인자를 int형으로 받아서 정수 계산을 해 결과가 0이 나왔다.
+
+
+#02
+
+#define PRN_3(n, j, k) printf(#n " : %.1f, " #j " : %.1f, " #k " : %.1f // 변수  "#n ", " #j ", " #k"로 PRN_3(" #n ", " #j ", " #k ")를 사용했을 때\n", n, j, k);
+
+
+#03
+
+while (i <= 10){
+
+printf("%d : ", i);
+
+a = AREA(i++);
+
+printf("%.2f\n", a);
+
+}
+위의 부분을 
+
+while (i <= 10){
+
+printf("%d : ", i);
+
+a = AREA(i);
+
+printf("%.2f\n", a);
+
+i++;
+}
+
+로 수정했다.
+
+
+#04
+
+#define PRN(x) printf(#x"\n"#x);
+
+
+#05
+
+int main(void){
+	char a='a';
+	int ch;
+
+	printf("%c\n", a);
+
+	ch=getch();
+	
+	printf("%c\n", ch);
+
+	if(ch=='a')
+		printf("Good");
+	else
+		printf("Bad");
+
+	return 0;
+}
+
+
+#06
+
+int main() {
+	system("ls");
+	
+	printf("몇 초 후에 화면을 지울까요? ");
+
+	int sec;
+	sec = getch();
+	sec -= 48;
+
+	printf("%d\n", sec);	
+	sleep(sec);
+	system("clear");
+
+	return 0;
+}
+

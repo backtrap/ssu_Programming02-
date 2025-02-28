@@ -1,0 +1,54 @@
+#01(1)
+
+00100000
+
+
+#01(2)
+
+10011101
+
+
+#01(3)
+
+10110011
+
+
+#01(4)
+
+11101110
+
+
+#01(5)
+
+1-2에서 얻은 결과와 10011101는 서로 동일하고 1-4에서 얻은 결과와 11101110은 서로 동일하다. 이를 통해 값 a와 값 b의 배타적 논리합을 통해 값 c를 얻었을 경우, 값 c와 값 b의 배타적 논리합을 수행하면 값 a를 얻을 수 있다는 사실을 알 수 있다. 
+
+
+#02
+
+
+#03
+
+unsigned long long pack_employee_data(unsigned id_no, unsigned job_type, unsigned salary, unsigned family) { // 코드 작성
+	unsigned long long employee = 0;
+	employee |= family;
+	employee |= salary << 4;
+	employee |= job_type << 30;
+	employee |= id_no << 10;
+
+	return employee;
+}
+
+void print_employee_data(unsigned long long employee) { // 코드 작성
+	unsigned id_no, job_type, salary, family;
+
+	id_no = employee & 0xFFFFF;
+	job_type = (employee >> 10) & 0xFF3;
+	salary = (employee >> 30) & 0xFFFFE;
+	family = (employee >> 4) & 0xF;
+
+	printf("ID는 %u, 작업 형태는 %u, 연봉은 %u, 부양 가족은 %u입니다.\n", id_no, job_type, salary, family);
+}
+
+
+#04
+

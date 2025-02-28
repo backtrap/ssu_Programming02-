@@ -1,0 +1,292 @@
+ * 메모리 구조
+각 바이트별로 주소가 붙은 1차원 배열
+
+
+ * 포인터
+주소를 다루기 위한 자료형
+
+메모리 공간에 접근하는 변수
+
+
+ * 포인터 변수 선언
+int * p;
+int * p, a;
+int * p, *q;
+
+
+ * 주소 연산자 &
+변수의 주소값을 알려주는 연산자
+
+상수, 수식, register 변수에서는 사용 ㅂㄱㄴ
+
+
+ * %p
+포인터 변수의 변환명세
+
+
+scanf("%d", &a);
+10진수 방식으로 읽고
+a의 주소로 가서 저장
+
+
+ * 포인터 변수 크기
+64bit os에서는 8byte
+32bit os에서는 4byte
+
+sizeof()로 계산하는 게 좋음
+
+
+ * 역참조 연산자 *
+메모리 공간의 내용물 꺼내오기
+
+포인터가 가리키는 메모리 공간에 접근하기 위한 연산자
+
+
+ * void형 포인터 변수
+만능 포인터 변수
+어떤 자료형의 주소든 저장 가능
+
+사용 전에 형 변환 필요
+
+
+ * 이중 포인터 변수
+포인터를 가리키는 포인터 변수
+
+ex)
+int a;
+int * p = &a;
+int ** pp = &p;
+
+
+ * 포인터 연산
+가리키고 있는 곳으로 부터 앞, 뒤 원소
+ptr + 2
+ptr - 2
+
+ptr2 - ptr1
+두 주소 사이의 원소 개수
+
+만약 int형의 ptr2 = 1004, ptr1 = 996이면
+ptr2 - ptr1 : 2
+(ptr2 - ptr1)/4
+-> (1004 - 996)/4
+-> 8/4
+-> 2
+
+
+ * 값에 의한 호출로 swap()하기
+ 1. 전역 변수를 이용한 swap
+ 2. 리턴 값 이용
+
+
+ * 주소에 의한 호출
+ 1. 매개변수에 포인터형
+ 2. 함수 몸체에서 역참조 연산자 *
+ 3. 인자에 주소 절달
+
+
+ * 배열 이름
+배열 이름은 포인터 변수
+
+배열 이름의 값은 배열의 첫번째 원소의 주소값
+
+배열 이름은 상수 포인터
+so, 다른 주소 배정 ㅂㄱㄴ
+
+arr[i]는 *(arr + i)를 의미
+
+2차원 배열에서 인덱스를 하나 제거하면
+포인터가 됨
+
+다차원 배열에서의 배열 이름 관련 계산은
+하위 차원 배열 결정 생각 (바로 밑의 하위 차원)
+
+한 차원 낮은 벡터의 시작 주소라 생각
+여기에서의 연산은 한 차원 낮은 벡터 결정하기
+
+
+ * 배열을 매개변수로 갖는 함수
+
+헤더 ex)
+void func(int arr[])
+void func(int * arr)
+
+인자는 주소 값, 포인터 변수, 배열 이름
+
+
+ * 문자 배열 vs 문자열 포인터
+
+문자 배열
+ 1. char str [] = "abc";
+ 2. strcpy() 사용
+ 3. 최초의 scanf()는 ㄱㄴ
+
+문자열 포인터
+ 1. char * str = "abc";
+ 2. 초기화 필요 (정확히는 공간 할당, 이 때 NULL 사용)
+
+
+ * 동적 메모리 할당
+<stdlib.h>에 있음
+
+자동 초기화
+ 1. malloc()은 없음
+ 2. calloc()은 0으로 자동 초기화
+
+둘 다 void *형으로 리턴
+so, 캐스팅 필요
+
+free(ptr)
+
+ex)
+int (*p)[N], *q;
+p = (int (*) [N])calloc(N*N, sizeof(int));
+q = (int *) p;
+...
+free(p);
+
+
+ * malloc()
+malloc(할당할 크기)
+
+malloc(sizeof() * n)
+
+ex)
+grade = (int *)malloc(sizeof(int) * 10);
+...
+free(grade);
+
+
+ * calloc()
+calloc(원소 개수, 원소 크기)
+
+calloc(n, sizeof())
+
+ex)
+grade = (int *)calloc(10, sizeof(int));
+
+
+ * %s
+주소를 주면
+널 문자를 만날 때까지 출력
+
+
+문자열 상수 그 자체는 자기 자신의 시작 주소를 의미
+
+
+ * %[] 변환명세
+%[^a] : a를 제외하고 입력받음
+
+%[a] : a만 입력받음
+
+ex)
+scanf(%[^\n]", &str);
+getchar();
+개행 문자만 제외하고 입력받은 후 str에 저장한다
+그리고 버퍼를 한번 비운다
+
+
+ * 문자열을 동적 할당으로 입력받기
+ 1. 문자열 배열 선언
+ 2. scanf()로 temp에 받기
+ 3. temp의 길이 만큼 동적 할당 (입력받은 만큼)
+ 4. 복붙 (temp -> 동적할당 받은 곳)
+
+ex)
+char * arr[100];
+char * temp = NULL;
+scanf("%s", temp);
+arr[0] = (char *)calloc(strlen(temp) + 1, sizeof(char));
+strcpy(arr[0], temp);
+
+
+ * main 인자
+int main(int argc, char * argv[])
+
+ argc
+명령어 라인에서 전달된 인자 개수
+
+ argv
+명령어 라인에서 입력된 문자열들에 대한 포인터
+다만 argv[0]은 실행 명령어 (./a.out)
+
+ex)
+./a.out 20 30에서
+argc는 3
+argv[0]은 ./a.out
+argv[1]은 20
+argv[2]는 30
+
+char * argv[]말고 char ** argv 사용도 ㄱㄴ
+
+
+ * 형 한정자
+ 1. const
+ 2. restirct
+
+ const
+변수의 값이 바뀌지 못하게 함
+
+ restrict
+포인터 변수에 사용
+
+
+ * const
+선언과 동시에 초기화 반드시 필요
+
+포인터를 통한 초기화는 가능
+
+ int * ptr
+주소값 수정 ㄱㄴ
+내용물 수정 ㄱㄴ
+
+ const int * ptr
+주소값 수정 ㄱㄴ
+내용물 수정 ㅂㄱㄴ
+
+ int const * ptr
+주소값 수정 ㄱㄴ
+내용물 수정 ㅂㄱㄴ
+
+int * const ptr
+주소값 수정 ㅂㄱㄴ
+내용물 수정 ㄱㄴ
+
+const int * const ptr
+주소값 수정 ㅂㄱㄴ
+내용물 수정 ㅂㄱㄴ
+
+int const * ptr과 const int * ptr은 동일
+
+ * const 배열
+배열의 내용물을 바꿀 수 없음
+
+
+ * restrict
+포인터 변수에 사용
+
+자기만 포인트 할 수 있다는 명시
+
+
+ * 함수 포인터
+함수명 자체가 함수 포인터
+
+ex) 
+int (* func) (void);
+func = main'
+
+하나의 함수를 여러 목적으로 유용하게 사용
+
+함수 포인터 함수 헤더
+ex) void func(int (*) (int, int));
+
+
+ * qsort()
+퀵 정렬 함수
+
+qsort(배열명, 원소 개수, 자료형 크기, 비교함수)
+
+ex) qsort(arr, 20, sizeof(int), compare_int);
+
+
+배열 선언 시 가장 큰 차원의 크기는 생략 가능
