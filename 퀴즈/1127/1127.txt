@@ -1,0 +1,93 @@
+#01
+
+int add(int num, ...) {
+	int sum = 0;
+	va_list ap;
+
+	va_start(ap, num);
+	while (num != 0) {
+		sum += va_arg(ap, int);
+		num--;
+	}
+
+	return sum;
+}
+
+#include <stdarg.h>를 선언해주어야 합니다.
+
+
+#02
+
+void myprintf(char * format, ...) {
+	va_list ap;
+	char * str;
+	char c;
+	int d;
+	
+	va_start(ap, format);
+	while (*format) {
+		if (strncmp(format, "%s", 2) == 0) {
+			str = va_arg(ap, char *);
+			while (*str) 
+				putchar(*str++);
+
+			format = format + 2;
+		}
+		else if (strncmp(format, "%c", 2) == 0) {
+			c = va_arg(ap, int);
+			putchar(c);
+
+			format = format + 2;
+		}
+		else if (strncmp(format, "%d", 2) == 0) {
+			d = va_arg(ap, int);
+			putchar(d);
+			
+			format = format + 2;
+		}
+		else {
+			putchar(*format);
+			format++;
+		}
+	}
+
+	va_end(ap);
+
+	return ;
+}
+
+
+#03
+main()에서는 stack형 포인터 변수를 이용해 스택 변수를 사용한다.
+
+stack.c에서의 수정은 다음과 같다.
+
+stack stk;
+
+char reset(stack stk) {
+	stk.top = EMPTY;
+}
+
+char push(char c, stack stk) {
+	stk.top++;
+	stk.s[skt.top] = c;
+}
+
+char pop(stack stk) {
+	return (stk.s[stk.top--]);
+}
+
+char top(const stack stk) {
+	return (stk.s[stk.top]);
+}
+
+bool empty(const stack stk) {
+	return (stk.top == EMPTY);
+}
+
+bool full(const stack stk) {
+	return (stk.top == FULL);
+}
+
+
+#04

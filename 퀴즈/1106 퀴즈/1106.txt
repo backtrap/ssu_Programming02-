@@ -1,0 +1,95 @@
+#01
+
+엔터키를 입력하기 전에는 myfile에 text 문자열이 저장되지 않았고, 엔터키를 입력한 후에 myfile에 text 문자열이 저장됐다.
+fclose() 함수가 없는 경우 엔터키를 입력하기 전에도 myfile에 text 문자열이 저장되지 않았고, 엔터키를 입력한 후에도 myfile에 text 문자열이 저장되지 않았다.
+
+..~~~~..
+
+#02
+
+test 문자열이 myfile에 저장되었다. 프로그램 1과 다르게 엔터키를 입력할 필요 없이 프로그램 2를 실행함과 동시에 text 문자열이 myfile에 저장되었다.
+
+프로그램 1에서는 fclose()를 호출하지 않은 경우, 엔터키의 입력 유무와 상관 없이 text 문자열이 myfile에 저장되지 않았다. 그러나 프로그램2에서는 fflush()를 호출하지 않은 경우, 엔터키를 누르기 전에는 text 문자열이 myfile에 저장되지 않았고 엔터키를 누른 후에는 text 문자열이 myfile에 저장되었다.
+
+..~~~~..
+
+#03
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct {
+	char name[100];
+	int id;
+	int age;
+	int salary;
+} employee;
+
+int main() {
+	FILE * f;
+	char temp[200];
+	employee * list = NULL;  
+	int count = 0;
+
+	f = fopen("./employee.txt", "w+");
+	if (f == NULL) {
+		printf("파일을 읽을 수 없습니다.\n");
+		return 0;
+	}
+
+	list = (employee *)malloc(1 * sizeof(employee));
+	if (list == NULL) {
+		printf("메모리 할당 실패\n");
+		fclose(f);
+		return 0;
+	}
+
+	while (1) {
+		printf("직원의 이름과 ID, 나이, 연봉을 입력해주세요 : ");
+		printf("(종료를 원할 경우 'finish!'을 입력.)\n");
+
+		fgets(temp, sizeof(temp), stdin);
+		temp[strcspn(temp, "\n")] = 0;
+
+		if (strcmp(temp, "finish!") == 0) {
+			break;
+		}
+
+		sscanf(temp, "%s %d %d %d", (list + count)->name,
+			   &((list + count)->id),
+			   &((list + count)->age),
+			   &((list + count)->salary));
+
+		count++;
+
+		list = (employee *)realloc(list, (count + 1) * sizeof(employee));
+	}
+
+	for (int i = 0; i < count; i++) {
+		fprintf(f, "%s %d %d %d\n", (list + i)->name,
+				(list + i)->id,
+				(list + i)->age,
+				(list + i)->salary);
+	}
+
+	fclose(f);
+	free(list);
+
+	return 0;
+}
+
+..~~~~..
+
+#04
+
+#include <stdio.h>
+
+int main() {
+FILE * f = fopen("./employee.txt", "r");
+char temp[10000];
+fprintf(f, "%s", temp);
+printf("%s", temp);
+
+return 0;
+}
